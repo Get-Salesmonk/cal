@@ -1,0 +1,3 @@
+setup:
+  project: cal
+  config: local
