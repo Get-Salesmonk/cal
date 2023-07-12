@@ -9,6 +9,7 @@
     "stripe.vscode-stripe", // stripe VSCode extension
     "Prisma.prisma", // syntax|format|completion for prisma
     "rebornix.project-snippets", // Share useful snippets between collaborators
-    "inlang.vs-code-extension" // improved i18n DX
+    "inlang.vs-code-extension", // improved i18n DX
+    "editorconfig.editorconfig"
   ]
 }
