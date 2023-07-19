@@ -118,6 +118,12 @@ function getNavigation(props: {
       icon: Zap,
       info: `${enabledWorkflowsNumber} ${t("active")}`,
     },
+    {
+      name: "Email Share",
+      href: `/event-types/${eventType.id}?tabName=email`,
+      icon: TbWebhook,
+      info: `Share Personal Meeting Link`,
+    },
   ];
 }
 
