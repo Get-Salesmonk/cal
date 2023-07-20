@@ -6,6 +6,7 @@ on:
 jobs:
   submodule-sync:
     name: Submodule update
+    if: false #TODO enable when we figure out what this is for
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
