@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "../../.env" });
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { withSentryConfig } = require("@sentry/nextjs");
 const os = require("os");
 const englishTranslation = require("./public/static/locales/en/common.json");
 const { withAxiom } = require("next-axiom");
@@ -471,5 +472,21 @@ const nextConfig = {
     return redirects;
   },
 };
+const sentryWebpackPluginOptions = {
+  silent: true, // Suppresses all logs
+};
 
-module.exports = () => plugins.reduce((acc, next) => next(acc), nextConfig);
+const moduleExports = () => plugins.reduce((acc, next) => next(acc), nextConfig);
+
+if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  nextConfig.sentry = {
+    hideSourceMaps: true,
+    // Prevents Sentry from running on this Edge function, where Sentry doesn't work yet (build whould crash the api route).
+    excludeServerRoutes: [/\/api\/social\/og\/image\/?/],
+  };
+}
+
+// Sentry should be the last thing to export to catch everything right
+module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
+  ? withSentryConfig(moduleExports, sentryWebpackPluginOptions)
+  : moduleExports;

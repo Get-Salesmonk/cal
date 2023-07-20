@@ -2,6 +2,7 @@
  * Typescript class based component for custom-error
  * @link https://nextjs.org/docs/advanced-features/custom-error-page
  */
+import * as Sentry from "@sentry/nextjs";
 import type { NextPage, NextPageContext } from "next";
 import type { ErrorProps } from "next/error";
 import NextError from "next/error";
@@ -48,6 +49,7 @@ const CustomError: NextPage<CustomErrorProps> = (props) => {
  */
 CustomError.getInitialProps = async (ctx: AugmentedNextPageContext) => {
   const { res, err, asPath } = ctx;
+  await Sentry.captureUnderscoreErrorException(ctx);
   const errorInitialProps = (await NextError.getInitialProps({
     res,
     err,
