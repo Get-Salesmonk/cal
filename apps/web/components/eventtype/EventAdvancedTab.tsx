@@ -17,7 +17,7 @@ import {
   allowDisablingHostConfirmationEmails,
 } from "@calcom/features/ee/workflows/lib/allowDisablingStandardEmails";
 import { FormBuilder } from "@calcom/features/form-builder/FormBuilder";
-import { EditableSchema } from "@calcom/features/form-builder/FormBuilderFieldsSchema"
+import { EditableSchema } from "@calcom/features/form-builder/FormBuilderFieldsSchema";
 import { BookerLayoutSelector } from "@calcom/features/settings/BookerLayoutSelector";
 import { classNames } from "@calcom/lib";
 import { APP_NAME, CAL_URL } from "@calcom/lib/constants";
@@ -26,6 +26,7 @@ import type { Prisma } from "@calcom/prisma/client";
 import { trpc } from "@calcom/trpc/react";
 import { Button, Checkbox, Label, SettingsToggle, showToast, TextField, Tooltip, Alert } from "@calcom/ui";
 import { Edit, Copy } from "@calcom/ui/components/icon";
+import WorkEmailController from "@components/saasmonk/eventtype/WorkEmailController";
 
 import RequiresConfirmationController from "./RequiresConfirmationController";
 
@@ -70,6 +71,7 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupProps, 
   };
 
   const [requiresConfirmation, setRequiresConfirmation] = useState(eventType.requiresConfirmation);
+  const [workEmail, setWorkEmail] = useState(eventType.workEmail);
   const placeholderHashedLink = `${CAL_URL}/d/${hashedUrl}/${eventType.slug}`;
   const seatsEnabled = formMethods.watch("seatsPerTimeSlotEnabled");
   const noShowFeeEnabled = eventType.metadata?.apps?.stripe?.paymentOption === "HOLD";
@@ -87,7 +89,9 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupProps, 
           return {
             ...field,
             hidden: !enabled,
-            editable: (!enabled ? "system-but-hidden" : "system-but-optional") as z.infer<typeof EditableSchema>
+            editable: (!enabled ? "system-but-hidden" : "system-but-optional") as z.infer<
+              typeof EditableSchema
+            >,
           };
         }
         return field;
@@ -184,6 +188,8 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupProps, 
           },
         }}
       />
+      <hr className="border-subtle" />
+      <WorkEmailController eventType={eventType} workEmail={workEmail} onWorkEmail={setWorkEmail} />
       <hr className="border-subtle" />
       <RequiresConfirmationController
         eventType={eventType}
