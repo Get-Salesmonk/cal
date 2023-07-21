@@ -748,6 +748,8 @@
   "add_input": "Add an Input",
   "disable_notes": "Hide notes in calendar",
   "disable_notes_description": "For privacy reasons, additional inputs and notes will be hidden in the calendar entry. They will still be sent to your email.",
+  "work_email": "Work email",
+  "work_email_description": "Allow only work emails to be used for booking",
   "requires_confirmation_description": "The booking needs to be manually confirmed before it is pushed to the integrations and a confirmation mail is sent.",
   "recurring_event": "Recurring Event",
   "recurring_event_description": "People can subscribe for recurring events",
