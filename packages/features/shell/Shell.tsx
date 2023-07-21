@@ -22,7 +22,7 @@ import TimezoneChangeDialog from "@calcom/features/settings/TimezoneChangeDialog
 import AdminPasswordBanner from "@calcom/features/users/components/AdminPasswordBanner";
 import VerifyEmailBanner from "@calcom/features/users/components/VerifyEmailBanner";
 import classNames from "@calcom/lib/classNames";
-import { APP_NAME, DESKTOP_APP_LINK, JOIN_DISCORD, ROADMAP, WEBAPP_URL } from "@calcom/lib/constants";
+import { APP_NAME, WEBAPP_URL } from "@calcom/lib/constants";
 import { getPlaceholderAvatar } from "@calcom/lib/defaultAvatarImage";
 import getBrandColours from "@calcom/lib/getBrandColours";
 import { useIsomorphicLayoutEffect } from "@calcom/lib/hooks/useIsomorphicLayoutEffect";
@@ -60,20 +60,16 @@ import {
   BarChart,
   Calendar,
   Clock,
-  Download,
   ExternalLink,
   FileText,
   Grid,
-  HelpCircle,
   Link as LinkIcon,
   LogOut,
-  Map,
   Moon,
   MoreHorizontal,
   ChevronDown,
   Copy,
   Settings,
-  Slack,
   Users,
   Zap,
   User as UserIcon,
@@ -422,7 +418,9 @@ function UserDropdown({ small }: UserDropdownProps) {
                   </DropdownItem>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                {/* ! Need to uncomment when we need to enable the features */}
+                {/* Discord menu item  */}
+                {/* <DropdownMenuItem>
                   <DropdownItem
                     StartIcon={(props) => <Slack strokeWidth={1.5} {...props} />}
                     target="_blank"
@@ -430,27 +428,30 @@ function UserDropdown({ small }: UserDropdownProps) {
                     href={JOIN_DISCORD}>
                     {t("join_our_discord")}
                   </DropdownItem>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                </DropdownMenuItem> */}
+                {/* Roadmap menu item  */}
+                {/* <DropdownMenuItem>
                   <DropdownItem StartIcon={Map} target="_blank" href={ROADMAP}>
                     {t("visit_roadmap")}
                   </DropdownItem>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                </DropdownMenuItem> */}
+                {/* Help menu item  */}
+                {/* <DropdownMenuItem>
                   <DropdownItem
                     type="button"
                     StartIcon={(props) => <HelpCircle aria-hidden="true" {...props} />}
                     onClick={() => setHelpOpen(true)}>
                     {t("help")}
                   </DropdownItem>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="desktop-hidden hidden lg:flex">
+                </DropdownMenuItem> */}
+                {/* Download for Desktop menu item  */}
+                {/* <DropdownMenuItem className="desktop-hidden hidden lg:flex">
                   <DropdownItem StartIcon={Download} target="_blank" rel="noreferrer" href={DESKTOP_APP_LINK}>
                     {t("download_desktop_app")}
                   </DropdownItem>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
 
-                <DropdownMenuSeparator />
+                {/* <DropdownMenuSeparator /> */}
 
                 <DropdownMenuItem>
                   <DropdownItem
