@@ -7,8 +7,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-
-
 import { validateCustomEventName } from "@calcom/core/event";
 import type { EventLocationType } from "@calcom/core/location";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
@@ -22,28 +20,25 @@ import { telemetryEventTypes, useTelemetry } from "@calcom/lib/telemetry";
 import { validateBookerLayouts } from "@calcom/lib/validateBookerLayouts";
 import type { Prisma } from "@calcom/prisma/client";
 import type { PeriodType, SchedulingType } from "@calcom/prisma/enums";
-import type { BookerLayoutSettings, customInputSchema, EventTypeMetaDataSchema } from "@calcom/prisma/zod-utils";
+import type {
+  BookerLayoutSettings,
+  customInputSchema,
+  EventTypeMetaDataSchema,
+} from "@calcom/prisma/zod-utils";
 import { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
 import type { IntervalLimit, RecurringEvent } from "@calcom/types/Calendar";
 import { Form, showToast } from "@calcom/ui";
 
-
-
 import { asStringOrThrow } from "@lib/asStringOrNull";
 import type { inferSSRProps } from "@lib/types/inferSSRProps";
-
-
 
 import PageWrapper from "@components/PageWrapper";
 import type { AvailabilityOption } from "@components/eventtype/EventAvailabilityTab";
 import { EventTypeSingleLayout } from "@components/eventtype/EventTypeSingleLayout";
 
-
-
 import { ssrInit } from "@server/lib/ssr";
-
 
 // These can't really be moved into calcom/ui due to the fact they use infered getserverside props typings;
 const EventSetupTab = dynamic(() =>
