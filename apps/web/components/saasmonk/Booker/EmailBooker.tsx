@@ -7,6 +7,7 @@ import { shallow } from "zustand/shallow";
 import BookingPageTagManager from "@calcom/app-store/BookingPageTagManager";
 import { useEmbedType, useEmbedUiConfig, useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import { AvailableTimeSlots } from "@calcom/features/bookings/Booker/components/AvailableTimeSlots";
+import { EventMeta } from "@calcom/features/bookings/Booker/components/EventMeta";
 import { BookerSection } from "@calcom/features/bookings/Booker/components/Section";
 import { Away, NotFound } from "@calcom/features/bookings/Booker/components/Unavailable";
 import {
@@ -42,9 +43,11 @@ const BookerComponent = ({
   eventSlug,
   month,
   bookingData,
-  hideBranding = false,
   isTeamEvent,
-}: BookerProps) => {
+  permalink,
+}: BookerProps & {
+  permalink: string;
+}) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const isTablet = useMediaQuery("(max-width: 1024px)");
   const timeslotsRef = useRef<HTMLDivElement>(null);
@@ -59,7 +62,7 @@ const BookerComponent = ({
   const isEmbed = useIsEmbed();
   const embedType = useEmbedType();
   // Floating Button and Element Click both are modal and thus have dark background
-  const hasDarkBackground = isEmbed && embedType !== "inline";
+
   const embedUiConfig = useEmbedUiConfig();
 
   // In Embed we give preference to embed configuration for the layout.If that's not set, we use the App configuration for the event layout
@@ -71,11 +74,6 @@ const BookerComponent = ({
   const selectedDate = useBookerStore((state) => state.selectedDate);
   const [selectedTimeslot, setSelectedTimeslot] = useBookerStore(
     (state) => [state.selectedTimeslot, state.setSelectedTimeslot],
-    shallow
-  );
-  // const seatedEventData = useBookerStore((state) => state.seatedEventData);
-  const [seatedEventData, setSeatedEventData] = useBookerStore(
-    (state) => [state.seatedEventData, state.setSeatedEventData],
     shallow
   );
 
@@ -107,25 +105,11 @@ const BookerComponent = ({
   });
 
   useEffect(() => {
-    if (isMobile && layout !== "mobile") {
-      setLayout("mobile");
-    } else if (!isMobile && layout === "mobile") {
-      setLayout(defaultLayout);
-    }
-  }, [isMobile, setLayout, layout, defaultLayout]);
-
-  useEffect(() => {
     if (event.isLoading) return setBookerState("loading");
     if (!selectedDate) return setBookerState("selecting_date");
     if (!selectedTimeslot) return setBookerState("selecting_time");
     return setBookerState("booking");
   }, [event, selectedDate, selectedTimeslot, setBookerState]);
-
-  useEffect(() => {
-    if (layout === "mobile") {
-      timeslotsRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [layout]);
 
   const hideEventTypeDetails = isEmbed ? embedUiConfig.hideEventTypeDetails : false;
 
@@ -147,7 +131,6 @@ const BookerComponent = ({
     column_view: true,
   };
 
-  const shouldShowFormInDialog = shouldShowFormInDialogMap[layout];
   return (
     <>
       {event.data ? <BookingPageTagManager eventType={event.data} /> : null}
@@ -180,20 +163,14 @@ const BookerComponent = ({
               className={classNames(
                 "relative z-10 flex [grid-area:meta]",
                 // Important: In Embed if we make min-height:100vh, it will cause the height to continuously keep on increasing
-                layout !== BookerLayouts.MONTH_VIEW && !isEmbed && "sm:min-h-screen"
+                !isEmbed && "sm:min-h-screen"
               )}>
               <BookerSection
                 area="meta"
                 className="max-w-screen flex w-full flex-col md:w-[var(--booker-meta-width)]">
-                {layout !== BookerLayouts.MONTH_VIEW &&
-                  !(layout === "mobile" && bookerState === "booking") && (
-                    <div className=" mt-auto px-5 py-3">
-                      <DatePicker />
-                    </div>
-                  )}
+                <EventMeta />
               </BookerSection>
             </StickyOnDesktop>
-
 
             <BookerSection
               key="large-calendar"
@@ -234,12 +211,16 @@ const BookerComponent = ({
           </AnimatePresence>
         </div>
       </div>
-      <EmailSnippetShare username={username} eventSlug={eventSlug} />
+      <EmailSnippetShare permalink={permalink} eventSlug={eventSlug} />
     </>
   );
 };
 
-export const Booker = (props: BookerProps) => {
+export const Booker = (
+  props: BookerProps & {
+    permalink: string;
+  }
+) => {
   if (props.isAway) return <Away />;
 
   return (
