@@ -35,6 +35,7 @@ import {
   Alert,
 } from "@calcom/ui";
 import { Edit, Copy } from "@calcom/ui/components/icon";
+import WorkEmailController from "@components/saasmonk/eventtype/WorkEmailController";
 
 import RequiresConfirmationController from "./RequiresConfirmationController";
 
@@ -79,6 +80,7 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupProps, 
   };
 
   const [requiresConfirmation, setRequiresConfirmation] = useState(eventType.requiresConfirmation);
+  const [workEmail, setWorkEmail] = useState(eventType.workEmail);
   const placeholderHashedLink = `${CAL_URL}/d/${hashedUrl}/${eventType.slug}`;
   const seatsEnabled = formMethods.watch("seatsPerTimeSlotEnabled");
   const noShowFeeEnabled = eventType.metadata?.apps?.stripe?.paymentOption === "HOLD";
@@ -195,6 +197,8 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupProps, 
           },
         }}
       />
+      <hr className="border-subtle" />
+      <WorkEmailController eventType={eventType} workEmail={workEmail} onWorkEmail={setWorkEmail} />
       <hr className="border-subtle" />
       <RequiresConfirmationController
         eventType={eventType}

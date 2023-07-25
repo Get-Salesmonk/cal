@@ -114,6 +114,7 @@ export type FormValues = {
   seatsPerTimeSlot: number | null;
   seatsShowAttendees: boolean | null;
   seatsPerTimeSlotEnabled: boolean;
+  workEmail: boolean;
   minimumBookingNotice: number;
   minimumBookingNoticeInDurationType: number;
   beforeBufferTime: number;
