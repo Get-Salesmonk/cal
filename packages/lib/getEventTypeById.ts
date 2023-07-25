@@ -93,6 +93,7 @@ export default async function getEventTypeById({
       requiresConfirmation: true,
       recurringEvent: true,
       hideCalendarNotes: true,
+      workEmail:true,
       disableGuests: true,
       minimumBookingNotice: true,
       beforeEventBuffer: true,
