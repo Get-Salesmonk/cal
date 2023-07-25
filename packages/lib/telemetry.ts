@@ -64,8 +64,8 @@ export const nextCollectBasicSettings: CollectOpts = {
       : {
           type: "jitsu",
           opts: {
-            key: "s2s.2pvs2bbpqq1zxna97wcml.esb6cikfrf7yn0qoh1nj1",
-            server: "https://t.calendso.com",
+            key: process.env.JITSU_WRITE_KEY ?? "",
+            server: process.env.JITSU_SERVER ?? "",
           },
         },
     process.env.TELEMETRY_DEBUG && { type: "echo", opts: { disableColor: true } },
