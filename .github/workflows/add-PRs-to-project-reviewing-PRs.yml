@@ -1,3 +1,4 @@
+# We don't use github projects, disabling
 name: Add PRs to project Reviewing PRs
 
 on:
@@ -7,6 +8,7 @@ on:
 
 jobs:
   add-PR-to-project:
+    if : false
     name: Add PRs to project Reviewing PRs
     runs-on: ubuntu-latest
     steps:

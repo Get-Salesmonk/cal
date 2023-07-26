@@ -77,6 +77,8 @@ const EventWebhooksTab = dynamic(() =>
 
 const ManagedEventTypeDialog = dynamic(() => import("@components/eventtype/ManagedEventDialog"));
 
+const EmailShareTab = dynamic(() => import("@components/saasmonk/eventtype/EmailShareTab"));
+
 export type FormValues = {
   title: string;
   eventTitle: string;
@@ -147,6 +149,7 @@ const querySchema = z.object({
       "advanced",
       "workflows",
       "webhooks",
+      "email",
     ])
     .optional()
     .default("setup"),
@@ -346,6 +349,7 @@ const EventTypePage = (props: EventTypeSetupProps) => {
       />
     ),
     webhooks: <EventWebhooksTab eventType={eventType} />,
+    email: <EmailShareTab eventType={eventType} team={team} />,
   } as const;
 
   const handleSubmit = async (values: FormValues) => {
