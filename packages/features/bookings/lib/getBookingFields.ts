@@ -12,6 +12,8 @@ import {
   EventTypeMetaDataSchema,
 } from "@calcom/prisma/zod-utils";
 
+import { addWorkEmailVariant } from "../../saasmonk/bookings/lib/getBookingFields";
+
 type Fields = z.infer<typeof eventTypeBookingFields>;
 
 if (typeof window !== "undefined") {
@@ -56,12 +58,14 @@ export const getSmsReminderNumberSource = ({
 export const getBookingFieldsWithSystemFields = ({
   bookingFields,
   disableGuests,
+  workEmail,
   customInputs,
   metadata,
   workflows,
 }: {
   bookingFields: Fields | EventType["bookingFields"];
   disableGuests: boolean;
+  workEmail: boolean;
   customInputs: EventTypeCustomInput[] | z.infer<typeof customInputSchema>[];
   metadata: EventType["metadata"] | z.infer<typeof EventTypeMetaDataSchema>;
   workflows: Prisma.EventTypeGetPayload<{
@@ -86,6 +90,7 @@ export const getBookingFieldsWithSystemFields = ({
   return ensureBookingInputsHaveSystemFields({
     bookingFields: parsedBookingFields,
     disableGuests,
+    workEmail,
     additionalNotesRequired: parsedMetaData?.additionalNotesRequired || false,
     customInputs: parsedCustomInputs,
     workflows,
@@ -95,12 +100,14 @@ export const getBookingFieldsWithSystemFields = ({
 export const ensureBookingInputsHaveSystemFields = ({
   bookingFields,
   disableGuests,
+  workEmail,
   additionalNotesRequired,
   customInputs,
   workflows,
 }: {
   bookingFields: Fields;
   disableGuests: boolean;
+  workEmail: boolean;
   additionalNotesRequired: boolean;
   customInputs: z.infer<typeof customInputSchema>[];
   workflows: Prisma.EventTypeGetPayload<{
@@ -340,6 +347,9 @@ export const ensureBookingInputsHaveSystemFields = ({
         : null),
     };
   });
+
+  // Saasmonk changes to bookingFields
+  bookingFields = addWorkEmailVariant(bookingFields, workEmail);
 
   return eventTypeBookingFields.brand<"HAS_SYSTEM_FIELDS">().parse(bookingFields);
 };
