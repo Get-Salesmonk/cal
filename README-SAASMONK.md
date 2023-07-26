@@ -10,7 +10,7 @@
    ```bash
    yarn dx
    ```
-
+6. Use `vercel env pull .env` to pull the local env from vercel. `.env.local` doesn't work with turborepo.
 
 ## Problems faced for windows users
 

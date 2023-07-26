@@ -19,11 +19,8 @@ import { Badge, Button, ErrorBoundary, Skeleton, useMeta, VerticalTabItem } from
 import {
   User,
   Key,
-  CreditCard,
-  Terminal,
   Users,
   Loader,
-  Lock,
   ArrowLeft,
   ChevronDown,
   ChevronRight,
@@ -57,24 +54,25 @@ const tabs: VerticalTabItemProps[] = [
       { name: "2fa_auth", href: "/settings/security/two-factor-auth" },
     ],
   },
-  {
-    name: "billing",
-    href: "/settings/billing",
-    icon: CreditCard,
-    children: [{ name: "manage_billing", href: "/settings/billing" }],
-  },
-  {
-    name: "developer",
-    href: "/settings/developer",
-    icon: Terminal,
-    children: [
-      //
-      { name: "webhooks", href: "/settings/developer/webhooks" },
-      { name: "api_keys", href: "/settings/developer/api-keys" },
-      // TODO: Add profile level for embeds
-      // { name: "embeds", href: "/v2/settings/developer/embeds" },
-    ],
-  },
+  // We don't need this now
+  // {
+  //   name: "billing",
+  //   href: "/settings/billing",
+  //   icon: CreditCard,
+  //   children: [{ name: "manage_billing", href: "/settings/billing" }],
+  // },
+  // {
+  //   name: "developer",
+  //   href: "/settings/developer",
+  //   icon: Terminal,
+  //   children: [
+  //     //
+  //     { name: "webhooks", href: "/settings/developer/webhooks" },
+  //     { name: "api_keys", href: "/settings/developer/api-keys" },
+  //     // TODO: Add profile level for embeds
+  //     // { name: "embeds", href: "/v2/settings/developer/embeds" },
+  //   ],
+  // },
   {
     name: "organization",
     href: "/settings/organizations",
@@ -96,10 +94,10 @@ const tabs: VerticalTabItemProps[] = [
         name: "appearance",
         href: "/settings/organizations/appearance",
       },
-      {
-        name: "billing",
-        href: "/settings/organizations/billing",
-      },
+      // {
+      //   name: "billing",
+      //   href: "/settings/organizations/billing",
+      // },
     ],
   },
   {
@@ -108,28 +106,29 @@ const tabs: VerticalTabItemProps[] = [
     icon: Users,
     children: [],
   },
-  {
-    name: "admin",
-    href: "/settings/admin",
-    icon: Lock,
-    children: [
-      //
-      { name: "features", href: "/settings/admin/flags" },
-      { name: "license", href: "/auth/setup?step=1" },
-      { name: "impersonation", href: "/settings/admin/impersonation" },
-      { name: "apps", href: "/settings/admin/apps/calendar" },
-      { name: "users", href: "/settings/admin/users" },
-      { name: "organizations", href: "/settings/admin/organizations" },
-    ],
-  },
+  // {
+  //   name: "admin",
+  //   href: "/settings/admin",
+  //   icon: Lock,
+  //   children: [
+  //     //
+  //     { name: "features", href: "/settings/admin/flags" },
+  //     { name: "license", href: "/auth/setup?step=1" },
+  //     { name: "impersonation", href: "/settings/admin/impersonation" },
+  //     { name: "apps", href: "/settings/admin/apps/calendar" },
+  //     { name: "users", href: "/settings/admin/users" },
+  //     { name: "organizations", href: "/settings/admin/organizations" },
+  //   ],
+  // },
 ];
 
-tabs.find((tab) => {
-  // Add "SAML SSO" to the tab
-  if (tab.name === "security" && !HOSTED_CAL_FEATURES) {
-    tab.children?.push({ name: "sso_configuration", href: "/settings/security/sso" });
-  }
-});
+// removing "SAML SSO" to the tab
+// tabs.find((tab) => {
+//   // Add "SAML SSO" to the tab
+//   if (tab.name === "security" && !HOSTED_CAL_FEATURES) {
+//     tab.children?.push({ name: "sso_configuration", href: "/settings/security/sso" });
+//   }
+// });
 
 // The following keys are assigned to admin only
 const adminRequiredKeys = ["admin"];
@@ -372,7 +371,8 @@ const SettingsSidebarContainer = ({
                                   disableChevron
                                 />
                                 {/* Hide if there is a parent ID */}
-                                {!team.parentId ? (
+                                {/* removing now ,if later need just remove false */}
+                                {!team.parentId && false ? (
                                   <>
                                     <VerticalTabItem
                                       name={t("billing")}
