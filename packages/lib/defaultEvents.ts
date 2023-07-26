@@ -82,6 +82,7 @@ const commons = {
   seatsShowAttendees: null,
   id: 0,
   hideCalendarNotes: false,
+  workEmail: false,
   recurringEvent: null,
   destinationCalendar: null,
   team: null,

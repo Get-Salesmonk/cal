@@ -14,13 +14,13 @@ type WorkEmailControllerProps = {
 export default function WorkEmailController({ workEmail, onWorkEmail, eventType }: WorkEmailControllerProps) {
   const formMethods = useFormContext<FormValues>();
   const { t } = useLocale();
-
   return (
     <div className="block items-start sm:flex">
       <div className="w-full">
         <Controller
           name="workEmail"
           control={formMethods.control}
+          defaultValue={workEmail}
           render={() => (
             <SettingsToggle
               title={t("work_email")}
