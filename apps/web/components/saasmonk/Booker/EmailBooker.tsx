@@ -1,11 +1,10 @@
 import { LazyMotion, domAnimation, AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
 import StickyBox from "react-sticky-box";
 import { shallow } from "zustand/shallow";
 
 import BookingPageTagManager from "@calcom/app-store/BookingPageTagManager";
-import { useEmbedType, useEmbedUiConfig, useIsEmbed } from "@calcom/embed-core/embed-iframe";
+import { useEmbedUiConfig, useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import { AvailableTimeSlots } from "@calcom/features/bookings/Booker/components/AvailableTimeSlots";
 import { EventMeta } from "@calcom/features/bookings/Booker/components/EventMeta";
 import { BookerSection } from "@calcom/features/bookings/Booker/components/Section";
@@ -17,7 +16,7 @@ import {
   extraDaysConfig,
 } from "@calcom/features/bookings/Booker/config";
 import { useBookerStore, useInitializeBookerStore } from "@calcom/features/bookings/Booker/store";
-import type { BookerLayout, BookerProps } from "@calcom/features/bookings/Booker/types";
+import type { BookerProps } from "@calcom/features/bookings/Booker/types";
 import { useEvent } from "@calcom/features/bookings/Booker/utils/event";
 import { validateLayout } from "@calcom/features/bookings/Booker/utils/layout";
 import { useBrandColors } from "@calcom/features/bookings/Booker/utils/use-brand-colors";
@@ -28,15 +27,6 @@ import { BookerLayouts, defaultBookerLayoutSettings } from "@calcom/prisma/zod-u
 import EmailSnippetShare from "./components/EmailSnippetShare";
 import { Header } from "./components/Header";
 import LargeCalendar from "./components/SaasmonkLargeCalendar";
-
-const PoweredBy = dynamic(() => import("@calcom/ee/components/PoweredBy"));
-
-const DatePicker = dynamic(
-  () => import("@calcom/features/bookings/Booker/components/DatePicker").then((mod) => mod.DatePicker),
-  {
-    ssr: false,
-  }
-);
 
 const BookerComponent = ({
   username,
@@ -60,7 +50,6 @@ const BookerComponent = ({
   const [_layout, setLayout] = useBookerStore((state) => [state.layout, state.setLayout], shallow);
 
   const isEmbed = useIsEmbed();
-  const embedType = useEmbedType();
   // Floating Button and Element Click both are modal and thus have dark background
 
   const embedUiConfig = useEmbedUiConfig();
@@ -117,20 +106,6 @@ const BookerComponent = ({
     return <NotFound />;
   }
 
-  // In Embed, a Dialog doesn't look good, we disable it intentionally for the layouts that support showing Form without Dialog(i.e. no-dialog Form)
-  const shouldShowFormInDialogMap: Record<BookerLayout, boolean> = {
-    // mobile supports showing the Form without Dialog
-    mobile: !isEmbed,
-    // We don't show Dialog in month_view currently. Can be easily toggled though as it supports no-dialog Form
-    month_view: false,
-    // week_view doesn't support no-dialog Form
-    // When it's supported, disable it for embed
-    week_view: true,
-    // column_view doesn't support no-dialog Form
-    // When it's supported, disable it for embed
-    column_view: true,
-  };
-
   return (
     <>
       {event.data ? <BookingPageTagManager eventType={event.data} /> : null}
@@ -182,36 +157,22 @@ const BookerComponent = ({
             </BookerSection>
 
             <BookerSection
-              key="datepicker"
-              area="main"
-              visible={bookerState !== "booking" && layout === BookerLayouts.MONTH_VIEW}
-              {...fadeInLeft}
-              initial="visible"
-              className="md:border-subtle ml-[-1px] h-full flex-shrink px-5 py-3 md:border-l lg:w-[var(--booker-main-width)]">
-              <DatePicker />
-            </BookerSection>
-            <BookerSection
               key="timeslots"
               area={{ default: "main", month_view: "timeslots" }}
               visible={layout !== BookerLayouts.WEEK_VIEW && bookerState === "selecting_time"}
-              className={classNames(
-                "border-subtle flex h-full w-full flex-col px-5 py-3 pb-0 md:border-l",
-                layout === BookerLayouts.MONTH_VIEW &&
-                  "scroll-bar h-full overflow-auto md:w-[var(--booker-timeslots-width)]",
-                layout !== BookerLayouts.MONTH_VIEW && "sticky top-0"
-              )}
+              className={classNames("border-subtle flex h-full w-full flex-col px-5 py-3 pb-0 md:border-l")}
               ref={timeslotsRef}
               {...fadeInLeft}>
               <AvailableTimeSlots
                 extraDays={extraDays}
-                limitHeight={layout === BookerLayouts.MONTH_VIEW}
+                limitHeight={false}
                 seatsPerTimeSlot={event.data?.seatsPerTimeSlot}
               />
             </BookerSection>
           </AnimatePresence>
         </div>
       </div>
-      <EmailSnippetShare permalink={permalink} eventSlug={eventSlug} />
+      <EmailSnippetShare permalink={permalink} />
     </>
   );
 };

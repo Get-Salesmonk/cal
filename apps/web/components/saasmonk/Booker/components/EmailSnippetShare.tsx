@@ -116,9 +116,12 @@ type TimeSlotsProps = {
 function TimeSlots({ times, permalink }: TimeSlotsProps) {
   const updatedTimes: string[][] = [];
 
+  // segrating the times in 3 col as grid will not work in email using table instead
+  // constant colNumber is number of column needed in the table
+  const colNumber = 3;
   times.forEach((time, index) => {
-    const remainder = Math.floor(index % 3);
-    const qoutient = Math.floor(index / 3);
+    const remainder = Math.floor(index % colNumber);
+    const qoutient = Math.floor(index / colNumber);
     if (updatedTimes[qoutient]) {
       updatedTimes[qoutient][remainder] = time;
     } else {
