@@ -16,7 +16,7 @@ export const metadata = {
   publisher: "Cal.com",
   slug: "google-calendar",
   url: "https://cal.com/",
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   dirName: "googlecalendar",
 } as AppMeta;
 

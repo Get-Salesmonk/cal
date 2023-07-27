@@ -14,7 +14,7 @@ export const _SBApps: App[] = [
     publisher: "Cal.com",
     slug: "google-calendar",
     url: "https://cal.com/",
-    email: "help@cal.com",
+    email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
     dirName: "googlecalendar",
   },
   {
@@ -29,7 +29,7 @@ export const _SBApps: App[] = [
     category: "video",
     slug: "zoom",
     title: "Zoom Video",
-    email: "help@cal.com",
+    email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
     appData: {
       location: {
         default: false,

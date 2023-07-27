@@ -15,7 +15,7 @@ export const metadata = {
   slug: "office365-calendar",
   dirName: "office365calendar",
   url: "https://cal.com/",
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
 } as AppMeta;
 
 export default metadata;

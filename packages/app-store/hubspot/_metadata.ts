@@ -15,7 +15,7 @@ export const metadata = {
   label: "HubSpot CRM",
   slug: "hubspot",
   title: "HubSpot CRM",
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   dirName: "hubspot",
 } as AppMeta;
 
