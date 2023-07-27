@@ -12,9 +12,8 @@ import { useEmailBookerStore } from "../store";
 
 function SaasmonkLargeCalendar({ extraDays }: { extraDays: number }) {
   const { addSlot } = useEmailBookerStore();
-
-  const selectedDate = useBookerStore((state) => state.selectedDate);
-  const date = selectedDate || dayjs().format("YYYY-MM-DD");
+  const selectedDate = new Date();
+  const date = dayjs().format("YYYY-MM-DD");
   const setSelectedTimeslot = useBookerStore((state) => state.setSelectedTimeslot);
   const selectedEventDuration = useBookerStore((state) => state.selectedDuration);
   const schedule = useScheduleForEvent({
@@ -43,23 +42,21 @@ function SaasmonkLargeCalendar({ extraDays }: { extraDays: number }) {
   }, [schedule, timezone, eventDuration]);
 
   return (
-    <div className="h-full [--calendar-dates-sticky-offset:66px]">
+    <div className="scrollbar-none max-h-[70vh] max-w-full overflow-x-hidden [--calendar-dates-sticky-offset:66px]">
       <Calendar
         isLoading={schedule.isLoading}
         availableTimeslots={availableSlots}
         startHour={0}
         endHour={23}
         events={[]}
-        startDate={selectedDate ? new Date(selectedDate) : new Date()}
+        startDate={selectedDate}
         endDate={dayjs(selectedDate).add(extraDays, "day").toDate()}
         onEmptyCellClick={(date) => {
-          setSelectedTimeslot(date.toString());
           const dateString = format(date, "EEEE,dd LLL");
           addSlot({ date: dateString, time: date.toString() });
         }}
         gridCellsPerHour={60 / eventDuration}
         hoverEventDuration={eventDuration}
-        hideHeader
       />
     </div>
   );
