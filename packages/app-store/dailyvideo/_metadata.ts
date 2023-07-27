@@ -16,7 +16,7 @@ export const metadata = {
   slug: "daily-video",
   title: "Cal Video",
   isGlobal: true,
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   appData: {
     location: {
       linkType: "dynamic",

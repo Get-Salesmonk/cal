@@ -16,7 +16,7 @@ export const metadata = {
   type: "wipemycal_other",
   url: "https://cal.com/apps/wipe-my-cal",
   variant: "other",
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   dirName: "wipemycalother",
 } as AppMeta;
 

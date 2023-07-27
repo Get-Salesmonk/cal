@@ -15,7 +15,7 @@ export const metadata = {
   category: "conferencing",
   slug: "zoom",
   title: "Zoom Video",
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   appData: {
     location: {
       default: false,

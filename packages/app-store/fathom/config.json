@@ -8,7 +8,7 @@
   "variant": "analytics",
   "categories": ["analytics"],
   "publisher": "Cal.com, Inc.",
-  "email": "help@cal.com",
+  "email": "support@saasmonk.io",
   "extendsFeature": "EventType",
   "appData": {
     "tag": {
