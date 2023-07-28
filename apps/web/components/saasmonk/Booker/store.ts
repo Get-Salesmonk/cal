@@ -35,4 +35,9 @@ export const useEmailBookerStore = create<EmailBooker>((set, get) => ({
       slots,
     });
   },
+  clearSlots() {
+    set({
+      slots: [],
+    });
+  },
 }));

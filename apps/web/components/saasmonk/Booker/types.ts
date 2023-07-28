@@ -11,4 +11,5 @@ export interface TimeSlot {
 export type EmailBooker = {
   slots: Slot[];
   addSlot: (timeSlot: TimeSlot) => void;
+  clearSlots: () => void;
 };

@@ -2,31 +2,42 @@ import format from "date-fns/format";
 import { useMemo } from "react";
 
 import dayjs from "@calcom/dayjs";
-import { useBookerStore } from "@calcom/features/bookings/Booker/store";
-import { useEvent, useScheduleForEvent } from "@calcom/features/bookings/Booker/utils/event";
+import { useInitializeBookerStore } from "@calcom/features/bookings/Booker/store";
+import { useScheduleForEvent } from "@calcom/features/bookings/Booker/utils/event";
 import { useTimePreferences } from "@calcom/features/bookings/lib";
 import { Calendar } from "@calcom/features/calendars/weeklyview";
 import type { CalendarAvailableTimeslots } from "@calcom/features/calendars/weeklyview/types/state";
+import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 
 import { useEmailBookerStore } from "../store";
 
 type EventType = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"] | undefined;
 
-function SaasmonkLargeCalendar({ extraDays, eventType }: { extraDays: number; eventType?: EventType }) {
+function SaasmonkLargeCalendar({
+  extraDays,
+  eventType,
+  username,
+}: {
+  extraDays: number;
+  eventType?: EventType;
+  username: string;
+}) {
   const { addSlot } = useEmailBookerStore();
+  useInitializeBookerStore({
+    username,
+    eventSlug: eventType?.slug ?? "",
+    eventId: eventType?.id,
+    layout: BookerLayouts.WEEK_VIEW,
+  });
   const selectedDate = new Date();
   const date = selectedDate || dayjs().format("YYYY-MM-DD");
-  const setSelectedTimeslot = useBookerStore((state) => state.setSelectedTimeslot);
-  const selectedEventDuration = useBookerStore((state) => state.selectedDuration);
   const schedule = useScheduleForEvent({
     prefetchNextMonth: !!extraDays && dayjs(date).month() !== dayjs(date).add(extraDays, "day").month(),
   });
   const { timezone } = useTimePreferences();
 
-  const event = useEvent();
-  console.log(eventType, "event");
-  const eventDuration = selectedEventDuration || eventType?.length || 30;
+  const eventDuration = eventType?.length || 30;
 
   const availableSlots = useMemo(() => {
     const availableTimeslots: CalendarAvailableTimeslots = {};

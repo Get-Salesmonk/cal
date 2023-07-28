@@ -1,9 +1,7 @@
-import { Tailwind, Heading, Text, Container, Row, Link, Hr, Section } from "@react-email/components";
 import type { RefObject } from "react";
 import { useState } from "react";
 import { shallow } from "zustand/shallow";
 
-import dayjs from "@calcom/dayjs";
 import { useBookerStore, useInitializeBookerStore } from "@calcom/features/bookings/Booker/store";
 import { useEvent, useScheduleForEvent } from "@calcom/features/bookings/Booker/utils/event";
 import { useTimePreferences } from "@calcom/features/bookings/lib";
@@ -12,6 +10,9 @@ import { CAL_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
+
+import { useEmailBookerStore } from "@components/saasmonk/Booker/store";
+import { dateSlugGenerator, formatToString } from "@components/saasmonk/Booker/utils";
 
 type EventType = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"] | undefined;
 
@@ -130,6 +131,7 @@ export const SaasmonkEmailEmbedPreview = ({
   username,
 }: EmailEmbedProps) => {
   const { t } = useLocale();
+  const { slots } = useEmailBookerStore();
   const [timeFormat, timezone] = useTimePreferences((state) => [state.timeFormat, state.timezone]);
   if (!eventType) {
     return null;
@@ -142,79 +144,142 @@ export const SaasmonkEmailEmbedPreview = ({
           <div
             ref={emailContentRef}
             style={{
+              color: "#2C3A47",
+              width: "100%",
+              fontWeight: 400,
               maxWidth: "500px",
             }}>
-            <Tailwind>
-              <div className="text-base text-[#2c3e50]">
-                <Heading as="h2" className="text-xl">
-                  {eventType.title}
-                </Heading>
-                <Text>
-                  {eventType?.length} {eventType?.length > 1 ? "mins" : "min"} &#x2022; {timezone}
-                </Text>
-              </div>
-              <div>
-                {selectedDateAndTime &&
-                  Object.keys(selectedDateAndTime)
-                    .sort()
-                    .map((key) => {
-                      const date = new Date(key);
-                      return (
-                        <Container key={key}>
-                          <Row>
-                            <Heading as="h2" className="font-semi-bold">
-                              {date.toLocaleDateString("en-US", {
-                                weekday: "long",
-                                month: "long",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
-                            </Heading>
-                          </Row>
-                          <Row>
-                            <Container>
-                              {selectedDateAndTime[key]?.length > 0 &&
-                                selectedDateAndTime[key].map((time) => {
-                                  const bookingURL = `${permalink}?duration=${eventType.length}&date=${key}&month=${month}&slot=${time}`;
-
-                                  return (
-                                    <Row key={time}>
-                                      <Container>
-                                        <Link href={bookingURL}>
-                                          {dayjs.utc(time).tz(timezone).format(timeFormat)}
-                                          &nbsp;
-                                        </Link>
-                                      </Container>
-                                    </Row>
-                                  );
-                                })}
-                            </Container>
-                          </Row>
-                        </Container>
-                      );
-                    })}
-              </div>
-              <Row>
-                <Section>
-                  <Link href={permalink} className="text-sm font-medium capitalize text-gray-700">
-                    find more times &#8599;
-                  </Link>
-                </Section>
-              </Row>
-              <Hr className="mt-1 w-full border-gray-600" />
-              <Section className="max-w-sm">
-                <Text className="text-left text-xs text-[#2c3e50]">
-                  Powered by{" "}
-                  <Link className="font-medium text-[#f3681b]" href="https://saasmonk.io">
-                    Saasmonk.io
-                  </Link>
-                </Text>
-              </Section>
-              <Container />
-            </Tailwind>
+            <h2
+              style={{
+                fontSize: "20px",
+                fontWeight: 600,
+                color: "#2c3e50",
+              }}>
+              {eventType.title}
+            </h2>
+            <p style={{ fontSize: "14px", marginTop: "8px" }}>
+              {eventType?.length} {eventType?.length > 1 ? "mins" : "min"} &#x2022; {timezone}
+            </p>
+            <div>
+              {slots.map((slot, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      marginTop: "16px",
+                    }}>
+                    <div
+                      style={{
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}>
+                      {slot.date}
+                    </div>
+                    <table
+                      style={{
+                        marginTop: "8px",
+                        fontSize: "14px",
+                      }}>
+                      <TimeSlots times={slot.times} permalink={permalink} />
+                    </table>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ marginTop: "16px" }}>
+              <a
+                href={permalink}
+                target="_blank"
+                style={{
+                  textTransform: "capitalize",
+                  fontSize: "16px",
+                  fontWeight: 500,
+                  textDecoration: "underline dotted",
+                  color: "#2C3A47",
+                }}>
+                find more times &#8599;
+              </a>
+            </div>
+            <div style={{ paddingTop: "8px", marginTop: "8px", borderTop: "1px solid #6b757e" }}>
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "#414e59",
+                }}>
+                Powered by{" "}
+                <a
+                  href={permalink}
+                  target="_blank"
+                  style={{
+                    fontWeight: 500,
+                    color: "#f3681b",
+                  }}>
+                  saasmonk.io
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </>
   );
 };
+
+type TimeSlotsProps = {
+  times: string[];
+  permalink: string;
+};
+
+function TimeSlots({ times, permalink }: TimeSlotsProps) {
+  const updatedTimes: string[][] = [];
+
+  // segrating the times in 3 col as grid will not work in email using table instead
+  // constant colNumber is number of column needed in the table
+  const colNumber = 3;
+  times.forEach((time, index) => {
+    const remainder = Math.floor(index % colNumber);
+    const qoutient = Math.floor(index / colNumber);
+    if (updatedTimes[qoutient]) {
+      updatedTimes[qoutient][remainder] = time;
+    } else {
+      updatedTimes[qoutient] = [time];
+    }
+  });
+
+  return (
+    <tbody>
+      {updatedTimes.map((row, index) => {
+        return (
+          <tr
+            key={index}
+            style={{
+              paddingBottom: "16px",
+            }}>
+            {row.map((time, index) => {
+              return (
+                <td key={index}>
+                  <a
+                    target="_blank"
+                    href={`${permalink}?${dateSlugGenerator(time)}`}
+                    key={index}
+                    style={{
+                      backgroundColor: "#fbd2bb",
+                      padding: "8px 12px",
+                      borderRadius: "8px",
+                      color: "#180a03",
+                      textAlign: "center",
+                      display: "block",
+                      textDecoration: "none",
+                      whiteSpace: "nowrap",
+                    }}>
+                    {formatToString(time)}
+                  </a>
+                </td>
+              );
+            })}
+          </tr>
+        );
+      })}
+    </tbody>
+  );
+}
