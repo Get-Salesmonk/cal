@@ -9,7 +9,7 @@
   "variant": "other",
   "categories": ["automation"],
   "publisher": "Cal.com, Inc.",
-  "email": "help@cal.com",
+  "email": "support@saasmonk.io",
   "licenseRequired": true,
   "teamsPlanRequired": {
     "upgradeUrl": "/apps/routing-forms/forms"

@@ -15,7 +15,7 @@ export const metadata = {
   type: "zapier_automation",
   url: "https://cal.com/apps/zapier",
   variant: "automation",
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   dirName: "zapier",
 } as AppMeta;
 
