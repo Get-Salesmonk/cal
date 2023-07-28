@@ -6,6 +6,8 @@ import { fieldTypesSchemaMap, dbReadResponseSchema } from "@calcom/features/form
 import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 import { bookingResponses, emailSchemaRefinement } from "@calcom/prisma/zod-utils";
 
+import { checkWorkEmail } from "../../saasmonk/bookings/lib/getBookingResponseSchema";
+
 type EventType = Parameters<typeof preprocess>[0]["eventType"];
 // eslint-disable-next-line @typescript-eslint/ban-types
 type View = ALL_VIEWS | (string & {});
@@ -146,6 +148,10 @@ function preprocess<T extends z.ZodType>({
               message: m("email_validation_error"),
             });
           }
+
+          // SaaSMonk work email validation
+          if (bookingField.variant === "work") checkWorkEmail(value, ctx, m);
+
           return;
         }
 
