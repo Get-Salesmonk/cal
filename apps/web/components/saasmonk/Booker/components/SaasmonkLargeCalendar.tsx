@@ -7,13 +7,16 @@ import { useEvent, useScheduleForEvent } from "@calcom/features/bookings/Booker/
 import { useTimePreferences } from "@calcom/features/bookings/lib";
 import { Calendar } from "@calcom/features/calendars/weeklyview";
 import type { CalendarAvailableTimeslots } from "@calcom/features/calendars/weeklyview/types/state";
+import type { RouterOutputs } from "@calcom/trpc/react";
 
 import { useEmailBookerStore } from "../store";
 
-function SaasmonkLargeCalendar({ extraDays }: { extraDays: number }) {
+type EventType = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"] | undefined;
+
+function SaasmonkLargeCalendar({ extraDays, eventType }: { extraDays: number; eventType?: EventType }) {
   const { addSlot } = useEmailBookerStore();
   const selectedDate = new Date();
-  const date = dayjs().format("YYYY-MM-DD");
+  const date = selectedDate || dayjs().format("YYYY-MM-DD");
   const setSelectedTimeslot = useBookerStore((state) => state.setSelectedTimeslot);
   const selectedEventDuration = useBookerStore((state) => state.selectedDuration);
   const schedule = useScheduleForEvent({
@@ -22,7 +25,8 @@ function SaasmonkLargeCalendar({ extraDays }: { extraDays: number }) {
   const { timezone } = useTimePreferences();
 
   const event = useEvent();
-  const eventDuration = selectedEventDuration || event?.data?.length || 30;
+  console.log(eventType, "event");
+  const eventDuration = selectedEventDuration || eventType?.length || 30;
 
   const availableSlots = useMemo(() => {
     const availableTimeslots: CalendarAvailableTimeslots = {};
@@ -49,8 +53,10 @@ function SaasmonkLargeCalendar({ extraDays }: { extraDays: number }) {
         startHour={0}
         endHour={23}
         events={[]}
-        startDate={selectedDate}
-        endDate={dayjs(selectedDate).add(extraDays, "day").toDate()}
+        startDate={selectedDate ? new Date(selectedDate) : new Date()}
+        endDate={dayjs(selectedDate ? new Date(selectedDate) : new Date())
+          .add(extraDays, "day")
+          .toDate()}
         onEmptyCellClick={(date) => {
           const dateString = format(date, "EEEE,dd LLL");
           addSlot({ date: dateString, time: date.toString() });

@@ -1711,7 +1711,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
             return (
               <div key={tab.href} className={classNames("flex flex-grow flex-col")}>
                 <div className="flex h-[55vh] flex-grow flex-col">
-                  <SaasmonkLargeCalendar extraDays={7} />
+                  <SaasmonkLargeCalendar extraDays={7} eventType={eventTypeData?.eventType} />
                 </div>
                 <div className={router.query.embedTabName == "embed-preview" ? "mt-2 block" : "hidden"} />
                 <DialogFooter className="mt-10 flex-row-reverse gap-x-2" showDivider>
