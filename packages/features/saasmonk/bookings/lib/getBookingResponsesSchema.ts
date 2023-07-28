@@ -1,7 +1,7 @@
 import type { RefinementCtx } from "zod";
 import { z } from "zod";
 
-import { nonWorkDomains } from "../../../../lib/saasmonk/constants";
+import { nonWorkDomains } from "@calcom/lib/saasmonk/constants";
 
 export const checkWorkEmail = (email: string, ctx: RefinementCtx, m: (message: string) => string) => {
   // Extract the domain from the email address
