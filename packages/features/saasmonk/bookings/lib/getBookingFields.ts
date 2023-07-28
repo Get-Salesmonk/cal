@@ -2,7 +2,7 @@ import type { z } from "zod";
 
 import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 
-type Fields = z.infer<typeof eventTypeBookingFields>;
+export type Fields = z.infer<typeof eventTypeBookingFields>;
 
 export const addWorkEmailVariant = (bookingFields: Fields, workEmail: boolean) => {
   // Find the bookingField with type email and editabe as system and add variant depending on workEmail
