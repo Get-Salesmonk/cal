@@ -17,7 +17,7 @@ export const metadata = {
   publisher: "Cal.com",
   url: "https://cal.com/",
   isGlobal: false,
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   appData: {
     location: {
       linkType: "dynamic",

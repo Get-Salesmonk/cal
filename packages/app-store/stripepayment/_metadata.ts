@@ -21,7 +21,7 @@ export const metadata = {
   docsUrl: "https://stripe.com/docs",
   variant: "payment",
   extendsFeature: "EventType",
-  email: "help@cal.com",
+  email: process.env.NEXT_PUBLIC_SUPPORT_MAIL_ADDRESS,
   dirName: "stripepayment",
 } as AppMeta;
 
