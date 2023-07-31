@@ -5,7 +5,7 @@ runs:
 
   steps:
     - name: Read env file
-      uses: buildjet/cache@v3
+      uses: action/cache@v3
       id: env-cache
       with:
         path: gh.env-${{ github.sha }}

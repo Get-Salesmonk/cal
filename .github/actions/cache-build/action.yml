@@ -8,7 +8,7 @@ runs:
   using: "composite"
   steps:
     - name: Cache production build
-      uses: buildjet/cache@v3
+      uses: action/cache@v3
       id: cache-build
       env:
         cache-name: prod-build
