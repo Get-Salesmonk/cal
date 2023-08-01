@@ -35,7 +35,6 @@ import {
   DialogClose,
   DialogFooter,
   DialogContent,
-  HorizontalTabs,
   Label,
   showToast,
   Switch,
@@ -45,6 +44,10 @@ import {
   Select,
 } from "@calcom/ui";
 import { Code, Trello, Sun, ArrowLeft, ArrowDown, ArrowUp } from "@calcom/ui/components/icon";
+
+import SaasmonkLargeCalendar from "@components/saasmonk/Booker/components/SaasmonkLargeCalendar";
+import { useEmailBookerStore } from "@components/saasmonk/Booker/store";
+import { SaasmonkEmailEmbedPreview } from "@components/saasmonk/Embed";
 
 type EventType = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"] | undefined;
 type EmbedType = "inline" | "floating-popup" | "element-click" | "email";
@@ -1376,6 +1379,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
   embedUrl: string;
 }) => {
   const { t } = useLocale();
+  const { clearSlots } = useEmailBookerStore();
   const router = useRouter();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const dialogContentRef = useRef<HTMLDivElement>(null);
@@ -1576,7 +1580,15 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
           </h3>
           <h4 className="text-subtle mb-6 text-sm font-normal">{embed.subtitle}</h4>
           {eventTypeData?.eventType && embedType === "email" ? (
-            <EmailEmbed eventType={eventTypeData?.eventType} username={data?.user.username as string} />
+            <SaasmonkEmailEmbedPreview
+              eventType={eventTypeData?.eventType}
+              emailContentRef={emailContentRef}
+              username={data?.user.username as string}
+              month={month as string}
+              selectedDateAndTime={
+                selectedDatesAndTimes ? selectedDatesAndTimes[eventTypeData?.eventType.slug as string] : {}
+              }
+            />
           ) : (
             <div className="flex flex-col">
               <div className={classNames("font-medium", embedType === "element-click" ? "hidden" : "")}>
@@ -1854,11 +1866,6 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
           )}
         </div>
         <div className="flex w-2/3 flex-col px-8 pt-8">
-          <HorizontalTabs
-            data-testid="embed-tabs"
-            tabs={embedType === "email" ? parsedTabs.filter((tab) => tab.name === "Preview") : parsedTabs}
-            linkShallow
-          />
           {tabs.map((tab) => {
             if (embedType !== "email") {
               return (
@@ -1913,21 +1920,23 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
             return (
               <div key={tab.href} className={classNames("flex flex-grow flex-col")}>
                 <div className="flex h-[55vh] flex-grow flex-col">
-                  <EmailEmbedPreview
+                  <SaasmonkLargeCalendar
+                    extraDays={7}
                     eventType={eventTypeData?.eventType}
-                    emailContentRef={emailContentRef}
                     username={data?.user.username as string}
-                    month={month as string}
-                    selectedDateAndTime={
-                      selectedDatesAndTimes
-                        ? selectedDatesAndTimes[eventTypeData?.eventType.slug as string]
-                        : {}
-                    }
                   />
                 </div>
                 <div className={router.query.embedTabName == "embed-preview" ? "mt-2 block" : "hidden"} />
                 <DialogFooter className="mt-10 flex-row-reverse gap-x-2" showDivider>
                   <DialogClose />
+                  {embedType === "email" && (
+                    <Button
+                      onClick={() => {
+                        clearSlots();
+                      }}>
+                      Clear Slots
+                    </Button>
+                  )}
                   <Button
                     onClick={() => {
                       handleCopyEmailText();

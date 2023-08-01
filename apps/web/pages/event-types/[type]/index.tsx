@@ -149,7 +149,6 @@ const querySchema = z.object({
       "advanced",
       "workflows",
       "webhooks",
-      "email",
     ])
     .optional()
     .default("setup"),
@@ -349,7 +348,7 @@ const EventTypePage = (props: EventTypeSetupProps) => {
       />
     ),
     webhooks: <EventWebhooksTab eventType={eventType} />,
-    email: <EmailShareTab eventType={eventType} team={team} />,
+    // email: <EmailShareTab eventType={eventType} team={team} />,
   } as const;
 
   const handleSubmit = async (values: FormValues) => {
