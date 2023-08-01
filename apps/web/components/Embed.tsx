@@ -28,7 +28,7 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
-import { TimezoneSelect } from "@calcom/ui";
+import { Badge, TimezoneSelect } from "@calcom/ui";
 import {
   Button,
   Dialog,
@@ -1512,7 +1512,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
         selection.removeAllRanges();
       }
 
-      showToast(t("code_copied"), "success");
+      showToast("Snippet copied! Paste it into an email.", "success");
     }
   };
 
@@ -1578,7 +1578,12 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
             </button>
             {embed.title}
           </h3>
-          <h4 className="text-subtle mb-6 text-sm font-normal">{embed.subtitle}</h4>
+          <h4 className="text-subtle mb-2 text-sm font-normal">{embed.subtitle}</h4>
+          <div className="mb-4">
+            <Badge variant="gray" size="lg">
+              Preview
+            </Badge>
+          </div>
           {eventTypeData?.eventType && embedType === "email" ? (
             <SaasmonkEmailEmbedPreview
               eventType={eventTypeData?.eventType}

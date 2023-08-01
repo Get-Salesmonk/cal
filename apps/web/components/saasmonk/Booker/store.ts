@@ -13,7 +13,15 @@ export const useEmailBookerStore = create<EmailBooker>((set, get) => ({
     const index = slots.findIndex((slot) => slot.date === timeSlot.date);
     // if the date is already there add the time to that date
     if (index > -1) {
-      slots[index].times.push(timeSlot.time);
+      const doesDateExist = slots[index].times.findIndex((date) => date === timeSlot.time);
+      if (doesDateExist > -1) {
+        slots[index].times.splice(doesDateExist, 1);
+        if (slots[index].times.length <= 0) {
+          slots.splice(index, 1);
+        }
+      } else {
+        slots[index].times.push(timeSlot.time);
+      }
     }
     // add the date and time to the slot
     else {
