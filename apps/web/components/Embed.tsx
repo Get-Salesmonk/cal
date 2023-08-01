@@ -28,7 +28,7 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
-import { Badge, TimezoneSelect } from "@calcom/ui";
+import { Badge, HorizontalTabs, TimezoneSelect } from "@calcom/ui";
 import {
   Button,
   Dialog,
@@ -1871,6 +1871,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
           )}
         </div>
         <div className="flex w-2/3 flex-col px-8 pt-8">
+          {embedType !== "email" && <HorizontalTabs data-testid="embed-tabs" tabs={parsedTabs} linkShallow />}
           {tabs.map((tab) => {
             if (embedType !== "email") {
               return (
@@ -1882,6 +1883,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
                       : "hidden"
                   )}>
                   <div className="flex h-[55vh] flex-grow flex-col">
+                    sac
                     {tab.type === "code" ? (
                       <tab.Component
                         embedType={embedType}

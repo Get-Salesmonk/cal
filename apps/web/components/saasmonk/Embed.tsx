@@ -1,5 +1,6 @@
 import type { RefObject } from "react";
 
+import { useTimePreferences } from "@calcom/features/bookings/lib";
 import { CAL_URL } from "@calcom/lib/constants";
 import type { RouterOutputs } from "@calcom/trpc/react";
 
@@ -23,6 +24,7 @@ type EmailEmbedProps = {
 
 export const SaasmonkEmailEmbedPreview = ({ emailContentRef, eventType, username }: EmailEmbedProps) => {
   const { slots } = useEmailBookerStore();
+  const [_, timezone] = useTimePreferences((state) => [state.timeFormat, state.timezone]);
   if (!eventType) {
     return null;
   }
