@@ -29,6 +29,7 @@ const publicEventSelect = Prisma.validator<Prisma.EventTypeSelect>()({
   length: true,
   locations: true,
   customInputs: true,
+  workEmail: true,
   disableGuests: true,
   metadata: true,
   requiresConfirmation: true,

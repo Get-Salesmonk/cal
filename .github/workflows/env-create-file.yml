@@ -40,7 +40,7 @@ env:
 
 jobs:
   create_env_file:
-    runs-on: buildjet-4vcpu-ubuntu-2204
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/dangerous-git-checkout
@@ -48,7 +48,7 @@ jobs:
 
         with:
           file-name: ${{ github.workspace }}/${{ env.ENV_FILE_NAME }}
-      - uses: buildjet/cache@v3
+      - uses: action/cache@v3
         id: env-cache
         with:
           path: ${{ env.ENV_FILE_NAME }}
