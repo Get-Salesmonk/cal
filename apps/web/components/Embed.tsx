@@ -1883,7 +1883,6 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
                       : "hidden"
                   )}>
                   <div className="flex h-[55vh] flex-grow flex-col">
-                    sac
                     {tab.type === "code" ? (
                       <tab.Component
                         embedType={embedType}
