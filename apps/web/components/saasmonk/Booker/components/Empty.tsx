@@ -19,6 +19,11 @@ type EmptyCellProps = GridCellToDateProps & {
   topOffsetMinutes?: number;
 };
 
+/*
+  ! always keep the file sync with the Empty
+  * route -> packages\features\calendars\weeklyview\components\event\Empty.tsx
+*/
+
 export function EmptyCell(props: EmptyCellProps) {
   const cellToDate = gridCellToDateTime({
     day: props.day,
@@ -93,8 +98,6 @@ function Cell({ isDisabled, topOffsetMinutes, timeSlot, isBooked = false }: Cell
     }),
     shallow
   );
-
-  console.log(!isDisabled && hoverEventDuration !== 0 && isBooked, "jjjjjj", isBooked, timeSlot);
 
   return (
     <div

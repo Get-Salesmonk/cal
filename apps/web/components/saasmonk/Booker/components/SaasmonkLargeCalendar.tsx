@@ -15,6 +15,11 @@ import { useEmailBookerStore } from "../store";
 
 type EventType = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"] | undefined;
 
+/*
+  ! always keep the file sync with the LargeCalendar
+  * route -> packages\features\bookings\Booker\components\LargeCalendar.tsx
+*/
+
 function SaasmonkLargeCalendar({
   extraDays,
   eventType,

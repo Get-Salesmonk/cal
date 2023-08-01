@@ -1,14 +1,6 @@
 import type { RefObject } from "react";
-import { useState } from "react";
-import { shallow } from "zustand/shallow";
 
-import { useBookerStore, useInitializeBookerStore } from "@calcom/features/bookings/Booker/store";
-import { useEvent, useScheduleForEvent } from "@calcom/features/bookings/Booker/utils/event";
-import { useTimePreferences } from "@calcom/features/bookings/lib";
-import { useNonEmptyScheduleDays, useSlotsForDate } from "@calcom/features/schedules";
 import { CAL_URL } from "@calcom/lib/constants";
-import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 
 import { useEmailBookerStore } from "@components/saasmonk/Booker/store";
@@ -25,114 +17,12 @@ type EmailEmbedProps = {
   selectedDateAndTime: { [key: string]: string[] };
 };
 
-type EmbedType = "inline" | "floating-popup" | "element-click" | "email";
+/*
+  ! No need to sync as this component is our custom component
+*/
 
-export const SaasmonkEmailEmbed = ({ eventType, username }: { eventType?: EventType; username: string }) => {
-  const { t, i18n } = useLocale();
-
-  const [timezone] = useTimePreferences((state) => [state.timezone]);
-
-  const [selectTime, setSelectTime] = useState(false);
-
-  useInitializeBookerStore({
-    username,
-    eventSlug: eventType?.slug ?? "",
-    eventId: eventType?.id,
-    layout: BookerLayouts.MONTH_VIEW,
-  });
-
-  const [month, selectedDate, selectedDatesAndTimes] = useBookerStore(
-    (state) => [state.month, state.selectedDate, state.selectedDatesAndTimes],
-    shallow
-  );
-  const [setSelectedDate, setMonth, setSelectedDatesAndTimes, setSelectedTimeslot] = useBookerStore(
-    (state) => [
-      state.setSelectedDate,
-      state.setMonth,
-      state.setSelectedDatesAndTimes,
-      state.setSelectedTimeslot,
-    ],
-    shallow
-  );
-  const event = useEvent();
-  const schedule = useScheduleForEvent();
-  const nonEmptyScheduleDays = useNonEmptyScheduleDays(schedule?.data?.slots);
-
-  const onTimeSelect = (time: string) => {
-    if (!eventType) {
-      return null;
-    }
-    if (selectedDatesAndTimes && selectedDatesAndTimes[eventType.slug]) {
-      const selectedDatesAndTimesForEvent = selectedDatesAndTimes[eventType.slug];
-      const selectedSlots = selectedDatesAndTimesForEvent[selectedDate as string] ?? [];
-      if (selectedSlots?.includes(time)) {
-        // Checks whether a user has removed all their timeSlots and thus removes it from the selectedDatesAndTimesForEvent state
-        if (selectedSlots?.length > 1) {
-          const updatedDatesAndTimes = {
-            ...selectedDatesAndTimes,
-            [eventType.slug]: {
-              ...selectedDatesAndTimesForEvent,
-              [selectedDate as string]: selectedSlots?.filter((slot: string) => slot !== time),
-            },
-          };
-
-          setSelectedDatesAndTimes(updatedDatesAndTimes);
-        } else {
-          const updatedDatesAndTimesForEvent = { ...selectedDatesAndTimesForEvent };
-          delete updatedDatesAndTimesForEvent[selectedDate as string];
-          setSelectedTimeslot(null);
-          setSelectedDatesAndTimes({
-            ...selectedDatesAndTimes,
-            [eventType.slug]: updatedDatesAndTimesForEvent,
-          });
-        }
-        return;
-      }
-
-      const updatedDatesAndTimes = {
-        ...selectedDatesAndTimes,
-        [eventType.slug]: {
-          ...selectedDatesAndTimesForEvent,
-          [selectedDate as string]: [...selectedSlots, time],
-        },
-      };
-
-      setSelectedDatesAndTimes(updatedDatesAndTimes);
-    } else if (!selectedDatesAndTimes) {
-      setSelectedDatesAndTimes({ [eventType.slug]: { [selectedDate as string]: [time] } });
-    } else {
-      setSelectedDatesAndTimes({
-        ...selectedDatesAndTimes,
-        [eventType.slug]: { [selectedDate as string]: [time] },
-      });
-    }
-
-    setSelectedTimeslot(time);
-  };
-
-  const slots = useSlotsForDate(selectedDate, schedule?.data?.slots);
-
-  if (!eventType) {
-    return null;
-  }
-
-  return (
-    <div className="flex flex-col">
-      <div className="mb-[9px] font-medium" />
-    </div>
-  );
-};
-
-export const SaasmonkEmailEmbedPreview = ({
-  emailContentRef,
-  eventType,
-  selectedDateAndTime,
-  month,
-  username,
-}: EmailEmbedProps) => {
-  const { t } = useLocale();
+export const SaasmonkEmailEmbedPreview = ({ emailContentRef, eventType, username }: EmailEmbedProps) => {
   const { slots } = useEmailBookerStore();
-  const [timeFormat, timezone] = useTimePreferences((state) => [state.timeFormat, state.timezone]);
   if (!eventType) {
     return null;
   }
