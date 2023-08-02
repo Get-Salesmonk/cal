@@ -59,7 +59,6 @@ import {
   Calendar,
   Clock,
   ExternalLink,
-  FileText,
   Grid,
   Link as LinkIcon,
   LogOut,
@@ -68,15 +67,12 @@ import {
   ChevronDown,
   Copy,
   Settings,
-  Users,
-  Zap,
   User as UserIcon,
 } from "@calcom/ui/components/icon";
 
 import { useOrgBranding } from "../ee/organizations/context/provider";
 import FreshChatProvider from "../ee/support/lib/freshchat/FreshChatProvider";
 import { NProgressNextRouter } from "./NProgressPageIndicator";
-import { TeamInviteBadge } from "./TeamInviteBadge";
 
 // removing tips for now
 // need to import without ssr to prevent hydration errors
@@ -526,13 +522,13 @@ const navigation: NavigationItemType[] = [
     href: "/availability",
     icon: Clock,
   },
-  {
-    name: "teams",
-    href: "/teams",
-    icon: Users,
-    onlyDesktop: true,
-    badge: <TeamInviteBadge />,
-  },
+  // {
+  //   name: "teams",
+  //   href: "/teams",
+  //   icon: Users,
+  //   onlyDesktop: true,
+  //   badge: <TeamInviteBadge />,
+  // },
   {
     name: "apps",
     href: "/apps",
@@ -569,19 +565,19 @@ const navigation: NavigationItemType[] = [
     href: "/more",
     icon: MoreHorizontal,
   },
-  {
-    name: "Routing Forms",
-    href: "/routing-forms/forms",
-    icon: FileText,
-    isCurrent: ({ router }) => {
-      return router.asPath.startsWith("/routing-forms/");
-    },
-  },
-  {
-    name: "workflows",
-    href: "/workflows",
-    icon: Zap,
-  },
+  // {
+  //   name: "Routing Forms",
+  //   href: "/routing-forms/forms",
+  //   icon: FileText,
+  //   isCurrent: ({ router }) => {
+  //     return router.asPath.startsWith("/routing-forms/");
+  //   },
+  // },
+  // {
+  //   name: "workflows",
+  //   href: "/workflows",
+  //   icon: Zap,
+  // },
   {
     name: "insights",
     href: "/insights",
