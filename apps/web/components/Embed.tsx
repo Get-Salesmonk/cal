@@ -28,7 +28,7 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
-import { TimezoneSelect } from "@calcom/ui";
+import { HorizontalTabs, TimezoneSelect } from "@calcom/ui";
 import {
   Button,
   Dialog,
@@ -1806,7 +1806,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
                         />
                         <div className="text-default text-sm">{t("hide_eventtype_details")}</div>
                       </div>
-                      {[
+                      {/* {[
                         { name: "brandColor", title: "Brand Color" },
                         // { name: "lightColor", title: "Light Color" },
                         // { name: "lighterColor", title: "Lighter Color" },
@@ -1829,7 +1829,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
                             />
                           </div>
                         </Label>
-                      ))}
+                      ))} */}
                       {isBookerLayoutsEnabled && (
                         <Label className="mb-6">
                           <div className="mb-2">{t("layout")}</div>
@@ -1866,6 +1866,11 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
           )}
         </div>
         <div className="flex w-2/3 flex-col px-8 pt-8">
+          <HorizontalTabs
+            data-testid="embed-tabs"
+            tabs={embedType === "email" ? parsedTabs.filter((tab) => tab.name === "Preview") : parsedTabs}
+            linkShallow
+          />
           {tabs.map((tab) => {
             if (embedType !== "email") {
               return (
