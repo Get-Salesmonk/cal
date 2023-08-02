@@ -224,7 +224,7 @@ export default function MyApp() {
         IS_SELF_HOSTED
           ? `
     calOrigin="${EMBED_CAL_ORIGIN}"
-    calJsUrl="${EMBED_CAL_JS_URL}"`
+    embedJsUrl="${EMBED_CAL_JS_URL}"`
           : ""
       }
   />;
