@@ -60,7 +60,6 @@ import {
   Clock,
   Copy,
   ExternalLink,
-  FileText,
   Grid,
   Link as LinkIcon,
   LogOut,
@@ -68,16 +67,12 @@ import {
   MoreHorizontal,
   Settings,
   User as UserIcon,
-  Users,
-  Zap,
 } from "@calcom/ui/components/icon";
 
 import { useOrgBranding } from "../ee/organizations/context/provider";
 import FreshChatProvider from "../ee/support/lib/freshchat/FreshChatProvider";
-import { TeamInviteBadge } from "./TeamInviteBadge";
 
 // removing tips for now
-// need to import without ssr to prevent hydration errors
 // const Tips = dynamic(() => import("@calcom/features/tips").then((mod) => mod.Tips), {
 //   ssr: false,
 // });
@@ -535,13 +530,13 @@ const navigation: NavigationItemType[] = [
     href: "/availability",
     icon: Clock,
   },
-  {
-    name: "teams",
-    href: "/teams",
-    icon: Users,
-    onlyDesktop: true,
-    badge: <TeamInviteBadge />,
-  },
+  // {
+  //   name: "teams",
+  //   href: "/teams",
+  //   icon: Users,
+  //   onlyDesktop: true,
+  //   badge: <TeamInviteBadge />,
+  // },
   {
     name: "apps",
     href: "/apps",
@@ -575,17 +570,19 @@ const navigation: NavigationItemType[] = [
     href: "/more",
     icon: MoreHorizontal,
   },
-  {
-    name: "Routing Forms",
-    href: "/routing-forms/forms",
-    icon: FileText,
-    isCurrent: ({ pathname }) => pathname?.startsWith("/routing-forms/"),
-  },
-  {
-    name: "workflows",
-    href: "/workflows",
-    icon: Zap,
-  },
+  // {
+  //   name: "Routing Forms",
+  //   href: "/routing-forms/forms",
+  //   icon: FileText,
+  //   isCurrent: ({ router }) => {
+  //     return router.asPath.startsWith("/routing-forms/");
+  //   },
+  // },
+  // {
+  //   name: "workflows",
+  //   href: "/workflows",
+  //   icon: Zap,
+  // },
   {
     name: "insights",
     href: "/insights",
