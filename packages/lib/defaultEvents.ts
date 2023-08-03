@@ -87,6 +87,7 @@ const commons = {
   destinationCalendar: null,
   team: null,
   requiresConfirmation: false,
+  requiresBookerEmailVerification: false,
   bookingLimits: null,
   durationLimits: null,
   hidden: false,
