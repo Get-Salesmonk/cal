@@ -29,7 +29,7 @@ const log = logger.getChildLogger({ prefix: ["[error]"] });
 
 const CustomError: NextPage<CustomErrorProps> = (props) => {
   const { statusCode, err, message, hasGetInitialPropsRun } = props;
-
+  console.log("From error page", err);
   if (!hasGetInitialPropsRun && err) {
     // getInitialProps is not called in case of
     // https://github.com/vercel/next.js/issues/8592. As a workaround, we pass
@@ -39,7 +39,6 @@ const CustomError: NextPage<CustomErrorProps> = (props) => {
     // can be captured here
     // e.g. Sentry.captureException(e);
   }
-  console.log(err);
   return <ErrorPage statusCode={statusCode} error={err} message={message} />;
 };
 

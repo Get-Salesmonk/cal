@@ -49,6 +49,7 @@ export default function Login({
   samlProductID,
   totpEmail,
 }: inferSSRProps<typeof _getServerSideProps> & WithNonceProps) {
+  console.log("From login page");
   const searchParams = useSearchParams();
   const { t } = useLocale();
   const router = useRouter();

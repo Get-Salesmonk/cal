@@ -50,7 +50,7 @@ const ErrorDebugPanel: React.FC<{ error: Props["error"]; children?: never }> = (
 
 export const ErrorPage: React.FC<Props> = (props) => {
   const { message, statusCode, error, displayDebug } = { ...defaultProps, ...props };
-
+  console.log("Error from error-page", error);
   return (
     <>
       <div className="bg-default min-h-screen px-4">
