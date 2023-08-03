@@ -25,7 +25,7 @@ function detectTransport(): SendmailTransport.Options | SMTPConnection.Options |
         rejectUnauthorized: isENVDev ? false : true,
       },
     };
-
+    console.log("EMAIL_SERVER_HOST", transport);
     return transport;
   }
 
