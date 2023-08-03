@@ -75,7 +75,7 @@ function SaasmonkLargeCalendar({
           .add(extraDays, "day")
           .toDate()}
         onEmptyCellClick={(date) => {
-          const dateString = format(date, "EEEE,dd LLL");
+          const dateString = format(date, "EEEE, dd LLL");
           addSlot({ date: dateString, time: date.toString() });
         }}
         gridCellsPerHour={60 / eventDuration}
