@@ -39,6 +39,7 @@ const CustomError: NextPage<CustomErrorProps> = (props) => {
     // can be captured here
     // e.g. Sentry.captureException(e);
   }
+  console.log(err);
   return <ErrorPage statusCode={statusCode} error={err} message={message} />;
 };
 
