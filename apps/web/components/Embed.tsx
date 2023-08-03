@@ -27,9 +27,8 @@ import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
 import {
-  Button,
   Badge,
-  HorizontalTabs,
+  Button,
   ColorPicker,
   Dialog,
   DialogClose,
