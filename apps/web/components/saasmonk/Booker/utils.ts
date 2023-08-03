@@ -15,5 +15,5 @@ export function dateSlugGenerator(time: string): string {
   const formatedDay = format(date, "yyyy-MM-dd");
   const formatedMonth = format(date, "yyyy-MM");
 
-  return `date=${formatedDay}&month=${formatedMonth}&slot=${time}`;
+  return `date=${formatedDay}&month=${formatedMonth}&slot=${date.toUTCString()}`;
 }

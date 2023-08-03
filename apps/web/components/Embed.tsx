@@ -28,6 +28,8 @@ import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
 import {
   Button,
+  Badge,
+  HorizontalTabs,
   ColorPicker,
   Dialog,
   DialogClose,
@@ -1524,7 +1526,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
         selection.removeAllRanges();
       }
 
-      showToast(t("code_copied"), "success");
+      showToast("Snippet copied! Paste it into an email.", "success");
     }
   };
 
@@ -1590,7 +1592,12 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
             </button>
             {embed.title}
           </h3>
-          <h4 className="text-subtle mb-6 text-sm font-normal">{embed.subtitle}</h4>
+          <h4 className="text-subtle mb-2 text-sm font-normal">{embed.subtitle}</h4>
+          <div className="mb-4">
+            <Badge variant="gray" size="lg">
+              Preview
+            </Badge>
+          </div>
           {eventTypeData?.eventType && embedType === "email" ? (
             <SaasmonkEmailEmbedPreview
               eventType={eventTypeData?.eventType}
@@ -1878,6 +1885,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
           )}
         </div>
         <div className="flex w-2/3 flex-col px-8 pt-8">
+          {embedType !== "email" && <HorizontalTabs data-testid="embed-tabs" tabs={parsedTabs} linkShallow />}
           {tabs.map((tab) => {
             if (embedType !== "email") {
               return (

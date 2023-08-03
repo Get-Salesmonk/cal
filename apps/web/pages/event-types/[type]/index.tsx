@@ -77,8 +77,6 @@ const EventWebhooksTab = dynamic(() =>
 
 const ManagedEventTypeDialog = dynamic(() => import("@components/eventtype/ManagedEventDialog"));
 
-const EmailShareTab = dynamic(() => import("@components/saasmonk/eventtype/EmailShareTab"));
-
 export type FormValues = {
   title: string;
   eventTitle: string;

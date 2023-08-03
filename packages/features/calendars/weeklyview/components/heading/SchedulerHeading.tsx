@@ -11,10 +11,13 @@ export function SchedulerHeading() {
     handleDateChange: state.handleDateChange,
   }));
 
+  // Check if the month of the dates are same if yes then no change in format but if no then change the date format
+  const isDatesFromSameMonth = startDate.month() === endDate.month();
+
   return (
     <header className="flex flex-none flex-col justify-between py-4 sm:flex-row sm:items-center">
       <h1 className="text-emphasis text-xl font-semibold">
-        {startDate.format("MMM DD")}-{endDate.format("DD")}
+        {startDate.format("MMM DD")}-{isDatesFromSameMonth ? endDate.format("DD") : endDate.format("MMM DD")}
         <span className="text-subtle">,{startDate.format("YYYY")}</span>
       </h1>
       <div className="flex items-center space-x-2 rtl:space-x-reverse">

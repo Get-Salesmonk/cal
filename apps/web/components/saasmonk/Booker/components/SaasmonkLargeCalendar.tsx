@@ -5,14 +5,20 @@ import dayjs from "@calcom/dayjs";
 import { useInitializeBookerStore } from "@calcom/features/bookings/Booker/store";
 import { useScheduleForEvent } from "@calcom/features/bookings/Booker/utils/event";
 import { useTimePreferences } from "@calcom/features/bookings/lib";
-import { Calendar } from "@calcom/features/calendars/weeklyview";
 import type { CalendarAvailableTimeslots } from "@calcom/features/calendars/weeklyview/types/state";
 import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 
+import { SaasmonkCalendar } from "@components/saasmonk/Booker/components/SaasmonkCalendar";
+
 import { useEmailBookerStore } from "../store";
 
 type EventType = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"] | undefined;
+
+/*
+  ! always keep the file sync with the LargeCalendar
+  * route -> packages\features\bookings\Booker\components\LargeCalendar.tsx
+*/
 
 function SaasmonkLargeCalendar({
   extraDays,
@@ -58,7 +64,7 @@ function SaasmonkLargeCalendar({
 
   return (
     <div className="scrollbar-none max-h-[70vh] max-w-full overflow-x-hidden [--calendar-dates-sticky-offset:66px]">
-      <Calendar
+      <SaasmonkCalendar
         isLoading={schedule.isLoading}
         availableTimeslots={availableSlots}
         startHour={0}
@@ -69,7 +75,7 @@ function SaasmonkLargeCalendar({
           .add(extraDays, "day")
           .toDate()}
         onEmptyCellClick={(date) => {
-          const dateString = format(date, "EEEE,dd LLL");
+          const dateString = format(date, "EEEE, dd LLL");
           addSlot({ date: dateString, time: date.toString() });
         }}
         gridCellsPerHour={60 / eventDuration}
