@@ -29,7 +29,6 @@ const log = logger.getChildLogger({ prefix: ["[error]"] });
 
 const CustomError: NextPage<CustomErrorProps> = (props) => {
   const { statusCode, err, message, hasGetInitialPropsRun } = props;
-  console.log("From error page", err);
   if (!hasGetInitialPropsRun && err) {
     // getInitialProps is not called in case of
     // https://github.com/vercel/next.js/issues/8592. As a workaround, we pass
@@ -48,10 +47,12 @@ const CustomError: NextPage<CustomErrorProps> = (props) => {
  */
 CustomError.getInitialProps = async (ctx: AugmentedNextPageContext) => {
   const { res, err, asPath } = ctx;
+  console.log("Error from server", err);
   const errorInitialProps = (await NextError.getInitialProps({
     res,
     err,
   } as NextPageContext)) as CustomErrorProps;
+  console.log("Error from server, errorInitialProps", errorInitialProps);
 
   // Workaround for https://github.com/vercel/next.js/issues/8592, mark when
   // getInitialProps has run
