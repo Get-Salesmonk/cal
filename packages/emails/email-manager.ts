@@ -92,7 +92,7 @@ export const sendScheduledEmails = async (
       })
     );
   }
-
+  console.log("emailsToSend", emailsToSend);
   await Promise.all(emailsToSend);
 };
 
