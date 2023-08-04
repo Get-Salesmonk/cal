@@ -93,10 +93,7 @@ export const sendScheduledEmails = async (
       })
     );
   }
-  console.log(
-    "emailsToSend",
-    emailsToSend.map((email) => email.constructor.name)
-  );
+
   await Promise.all(emailsToSend);
 };
 

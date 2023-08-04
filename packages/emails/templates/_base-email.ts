@@ -51,7 +51,7 @@ export default class BaseEmail {
       ...payload,
       ...(parseSubject.success && { subject: decodeHTML(parseSubject.data) }),
     };
-
+    console.log("Email payload", payload);
     new Promise((resolve, reject) =>
       createTransport(this.getMailerOptions().transport).sendMail(
         payloadWithUnEscapedSubject,
@@ -70,6 +70,7 @@ export default class BaseEmail {
   }
 
   protected getMailerOptions() {
+    console.log("serverConfig", serverConfig);
     return {
       transport: serverConfig.transport,
       from: serverConfig.from,
