@@ -31,6 +31,7 @@ export default class BaseEmail {
     return {};
   }
   public async sendEmail() {
+    console.log("sendEmail start");
     const featureFlags = await getFeatureFlagMap(prisma);
     /** If email kill switch exists and is active, we prevent emails being sent. */
     if (featureFlags.emails) {
@@ -43,13 +44,14 @@ export default class BaseEmail {
       console.log("Skipped Sending Email as NEXT_PUBLIC_IS_E2E==1");
       return new Promise((r) => r("Skipped sendEmail for E2E"));
     }
-
+    console.log("sendEmail get payload");
     const payload = this.getNodeMailerPayload();
     const parseSubject = z.string().safeParse(payload?.subject);
     const payloadWithUnEscapedSubject = {
       ...payload,
       ...(parseSubject.success && { subject: decodeHTML(parseSubject.data) }),
     };
+    console.log("sendEmail payload set");
     new Promise((resolve, reject) =>
       createTransport(this.getMailerOptions().transport).sendMail(
         payloadWithUnEscapedSubject,
@@ -66,6 +68,7 @@ export default class BaseEmail {
         }
       )
     ).catch((e) => console.log("sendEmail Error", e.message));
+    console.log("sendEmail promise resolved");
     return new Promise((resolve) => resolve("send mail async"));
   }
 
