@@ -51,7 +51,6 @@ const sendEmail = (prepare: () => BaseEmail) => {
       const email = prepare();
       resolve(email.sendEmail());
     } catch (e) {
-      console.log("Error from sendEmail block", e.message);
       reject(console.error(`${prepare.constructor.name}.sendEmail failed`, e));
     }
   });

@@ -4,7 +4,6 @@ import type SMTPConnection from "nodemailer/lib/smtp-connection";
 import { isENVDev } from "@calcom/lib/env";
 
 function detectTransport(): SendmailTransport.Options | SMTPConnection.Options | string {
-  console.log("Env variables in serverConfig", process.env.EMAIL_SERVER, process.env.EMAIL_SERVER_HOST);
   if (process.env.EMAIL_SERVER) {
     return process.env.EMAIL_SERVER;
   }
@@ -26,7 +25,7 @@ function detectTransport(): SendmailTransport.Options | SMTPConnection.Options |
         rejectUnauthorized: isENVDev ? false : true,
       },
     };
-    console.log("EMAIL_SERVER_HOST", transport);
+
     return transport;
   }
 

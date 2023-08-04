@@ -55,7 +55,7 @@ export default class BaseEmail {
         payloadWithUnEscapedSubject,
         (_err, info) => {
           if (_err) {
-            console.log("Error from nodemailer", _err.message);
+            console.log("Error from nodemailer");
             const err = getErrorFromUnknown(_err);
             this.printNodeMailerError(err);
             reject(err);
