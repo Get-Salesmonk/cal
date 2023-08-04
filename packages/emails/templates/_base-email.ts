@@ -56,6 +56,8 @@ export default class BaseEmail {
       createTransport(this.getMailerOptions().transport).sendMail(
         payloadWithUnEscapedSubject,
         (_err, info) => {
+          console.log("senEmail callback error", _err);
+          console.log("senEmail callback success", info);
           if (_err) {
             console.log("Error from nodemailer");
             const err = getErrorFromUnknown(_err);
