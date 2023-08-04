@@ -33,7 +33,6 @@ export default class BaseEmail {
   public async sendEmail() {
     const featureFlags = await getFeatureFlagMap(prisma);
     /** If email kill switch exists and is active, we prevent emails being sent. */
-    console.log("Sending email log");
     if (featureFlags.emails) {
       console.warn("Skipped Sending Email due to active Kill Switch");
       return new Promise((r) => r("Skipped Sending Email due to active Kill Switch"));
@@ -51,16 +50,17 @@ export default class BaseEmail {
       ...payload,
       ...(parseSubject.success && { subject: decodeHTML(parseSubject.data) }),
     };
-    console.log("Email payload", payload);
     new Promise((resolve, reject) =>
       createTransport(this.getMailerOptions().transport).sendMail(
         payloadWithUnEscapedSubject,
         (_err, info) => {
           if (_err) {
+            console.log("Error from nodemailer", _err);
             const err = getErrorFromUnknown(_err);
             this.printNodeMailerError(err);
             reject(err);
           } else {
+            console.log("Success from nodemailer", info);
             resolve(info);
           }
         }
@@ -70,7 +70,6 @@ export default class BaseEmail {
   }
 
   protected getMailerOptions() {
-    console.log("serverConfig", serverConfig);
     return {
       transport: serverConfig.transport,
       from: serverConfig.from,
