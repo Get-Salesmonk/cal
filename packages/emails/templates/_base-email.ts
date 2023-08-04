@@ -60,7 +60,7 @@ export default class BaseEmail {
             this.printNodeMailerError(err);
             reject(err);
           } else {
-            console.log("Success from nodemailer", info);
+            console.log("Success from nodemailer");
             resolve(info);
           }
         }
