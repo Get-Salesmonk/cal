@@ -60,12 +60,12 @@ export default class BaseEmail {
             this.printNodeMailerError(err);
             reject(err);
           } else {
-            console.log("Success from nodemailer");
+            console.log("Success from nodemailer", info);
             resolve(info);
           }
         }
       )
-    ).catch((e) => console.error("sendEmail", e));
+    ).catch((e) => console.log("sendEmail Error", e.message));
     return new Promise((resolve) => resolve("send mail async"));
   }
 
