@@ -27,14 +27,14 @@ import { BookerLayouts } from "@calcom/prisma/zod-utils";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
 import {
-  Button,
   Badge,
-  HorizontalTabs,
+  Button,
   ColorPicker,
   Dialog,
   DialogClose,
   DialogContent,
   DialogFooter,
+  HorizontalTabs,
   Label,
   Select,
   Switch,
@@ -75,9 +75,9 @@ type PreviewState = {
     [key: string]: string | boolean | undefined | Record<string, string>;
   };
   elementClick: Record<string, string>;
-  palette: {
-    brandColor: string;
-  };
+  // palette: {
+  //   brandColor: string;
+  // };
   hideEventTypeDetails: boolean;
   layout: BookerLayouts;
 };
@@ -172,13 +172,13 @@ const getInstructionString = ({
 const getEmbedUIInstructionString = ({
   apiName,
   theme,
-  brandColor,
+  //brandColor,
   hideEventTypeDetails,
   layout,
 }: {
   apiName: string;
   theme?: string;
-  brandColor: string;
+  //brandColor: string;
   hideEventTypeDetails: boolean;
   layout?: string;
 }) => {
@@ -188,11 +188,11 @@ const getEmbedUIInstructionString = ({
     instructionName: "ui",
     instructionArg: {
       theme,
-      styles: {
-        branding: {
-          brandColor,
-        },
-      },
+      // styles: {
+      //   branding: {
+      //     brandColor,
+      //   },
+      // },
       hideEventTypeDetails: hideEventTypeDetails,
       layout,
     },
@@ -352,7 +352,7 @@ const getEmbedTypeSpecificString = ({
   let uiInstructionStringArg: {
     apiName: string;
     theme: PreviewState["theme"];
-    brandColor: string;
+    //brandColor: string;
     hideEventTypeDetails: boolean;
     layout?: BookerLayout;
   };
@@ -360,7 +360,7 @@ const getEmbedTypeSpecificString = ({
     uiInstructionStringArg = {
       apiName: "cal",
       theme: previewState.theme,
-      brandColor: previewState.palette.brandColor,
+      //brandColor: previewState.palette.brandColor,
       hideEventTypeDetails: previewState.hideEventTypeDetails,
       layout: previewState.layout,
     };
@@ -368,7 +368,7 @@ const getEmbedTypeSpecificString = ({
     uiInstructionStringArg = {
       apiName: "Cal",
       theme: previewState.theme,
-      brandColor: previewState.palette.brandColor,
+      //brandColor: previewState.palette.brandColor,
       hideEventTypeDetails: previewState.hideEventTypeDetails,
       layout: previewState.layout,
     };
@@ -1441,9 +1441,9 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
     floatingPopup: {},
     elementClick: {},
     hideEventTypeDetails: false,
-    palette: {
-      brandColor: "#000000",
-    },
+    // palette: {
+    //   brandColor: "#000000",
+    // },
   });
 
   const close = () => {
@@ -1825,7 +1825,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
                         />
                         <div className="text-default text-sm">{t("hide_eventtype_details")}</div>
                       </div>
-                      {[
+                      {/* {[
                         { name: "brandColor", title: "Brand Color" },
                         // { name: "lightColor", title: "Light Color" },
                         // { name: "lighterColor", title: "Lighter Color" },
@@ -1848,7 +1848,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
                             />
                           </div>
                         </Label>
-                      ))}
+                      ))} */}
                       {isBookerLayoutsEnabled && (
                         <Label className="mb-6">
                           <div className="mb-2">{t("layout")}</div>
