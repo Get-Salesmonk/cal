@@ -40,16 +40,17 @@ export const SaasmonkEmailEmbedPreview = ({ emailContentRef, eventType, username
               width: "100%",
               fontWeight: 400,
               maxWidth: "500px",
+              fontSize: "13px",
             }}>
             <h2
               style={{
-                fontSize: "20px",
+                fontSize: "13px",
                 fontWeight: 600,
                 color: "#2c3e50",
               }}>
               {eventType.title}
             </h2>
-            <p style={{ fontSize: "14px", marginTop: "8px" }}>
+            <p style={{ fontSize: "12px", marginTop: "8px" }}>
               {eventType?.length} {eventType?.length > 1 ? "mins" : "min"} &#x2022; {timezone}
             </p>
             <div>
@@ -63,14 +64,14 @@ export const SaasmonkEmailEmbedPreview = ({ emailContentRef, eventType, username
                     <div
                       style={{
                         fontWeight: 500,
-                        fontSize: "16px",
+                        fontSize: "13px",
                       }}>
                       {slot.date}
                     </div>
                     <table
                       style={{
                         marginTop: "8px",
-                        fontSize: "14px",
+                        fontSize: "10px",
                       }}>
                       <TimeSlots times={slot.times} permalink={permalink} />
                     </table>
@@ -84,7 +85,7 @@ export const SaasmonkEmailEmbedPreview = ({ emailContentRef, eventType, username
                 target="_blank"
                 style={{
                   textTransform: "capitalize",
-                  fontSize: "16px",
+                  fontSize: "13px",
                   fontWeight: 500,
                   textDecoration: "underline dotted",
                   color: "#2C3A47",
